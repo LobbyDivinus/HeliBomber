@@ -3,12 +3,11 @@ package info.flowersoft.helibomber;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.threed.jpct.RGBColor;
+import com.threed.jpct.SimpleVector;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
 import info.flowersoft.gameframe.description.Brush;
@@ -25,25 +24,17 @@ public class Game extends AppRenderer {
 	
 	private int[] mapHeight;
 	
-	private int xmax;
-	
-	private int ymax;
-	
-	private ShapeFactory shapeFactory;
-	
-	private BlittingEngine blittingEngine;
-	
-	private FontDescription font;
-	
-	private Shape skyShape;
-	
-	private List<Cloud> cloudList;
+	private GameContext context;
 	
 	private Shape heliShape;
 	private Shape rotorShape;
 	
+	private AccelerationVector acceleration;
+	
 	public Game(Bundle savedInstance, Context con) {
 		super(savedInstance, con);
+		
+		acceleration = new AccelerationVector(con);
 	}
 
 	@Override
@@ -56,115 +47,68 @@ public class Game extends AppRenderer {
 		loadTexture("rotor2", R.raw.rotor2, true);
 		loadTexture("font", R.raw.font, true);
 		
-		xmax = 800;
-		ymax = xmax * h / w;
+		context = new GameContext();
 		
-		shapeFactory = new ShapeFactory(getWorld(), getBuffer());
-		shapeFactory.setVirtualResolution(0, 0, xmax, ymax);
+		context.xmax = 800;
+		context.ymax = context.xmax * h / w;
 		
-		blittingEngine = new BlittingEngine(getBuffer());
-		blittingEngine.setVirtualResolution(0, 0, xmax, ymax);
+		context.shapeFactory = new ShapeFactory(getWorld(), getBuffer());
+		context.shapeFactory.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
-		createTerrain();
+		context.blittingEngine = new BlittingEngine(getBuffer());
+		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
-		skyShape = shapeFactory.createImage(new ImageDescription("sky", true, true), 0, 0, xmax, ymax, 0);
-		skyShape.setOrder(1000);
+		context.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
 		
-		cloudList = new ArrayList<Cloud>();
 		
-		ImageDescription cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
-		for (int i = 0; i < 100; i++) {
-			addCloud(cloudImg);
-		}
 		
-		heliShape = shapeFactory.createImage(new ImageDescription("heli", true, true), xmax / 2, ymax / 2);
+		GameRessources res = new GameRessources();
+		
+		res.skyImg = new ImageDescription("sky", false, true);
+		
+		res.cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
+		
+		context.res = res;
+		
+		
+		
+		context.sky = new Sky(context);
+		
+		context.terrain = new Terrain(context);
+		
+		
+		heliShape = context.shapeFactory.createImage(
+				new ImageDescription("heli", true, true), context.xmax / 2, context.ymax / 2);
 		heliShape.midPivot();
-		rotorShape = shapeFactory.createImage(new ImageDescription("rotor", true, true), xmax / 2, ymax / 2);
+		rotorShape = context.shapeFactory.createImage(
+				new ImageDescription("rotor", true, true), context.xmax / 2, context.ymax / 2);
 		rotorShape.midPivot();
-		
-		font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
-	}
-	
-	private void addCloud(ImageDescription img) {
-		Cloud cloud = new Cloud();
-		int size = (int) (100 * Math.random()) + 300;
-		cloud.cloud = shapeFactory.createImage(img, 0, 0, size, size, (int) (8 * Math.random()));
-		cloud.x = (int) ((mapWidth + 400) * Math.random()) - 400;
-		cloud.y = (int) ((ymax - 100) * Math.random()) - 200;
-		cloud.xSpeed = 40 * (float) Math.random() * (ymax - 300 - cloud.y) / ymax;
-		cloud.cloud.setOrder(999);
-		
-		cloud.cloud.getBrush().setTransparency((int) (16 * Math.random()));
-		cloud.cloud.applyBrush();
-		
-		cloudList.add(cloud);
-	}
-	
-	private void createTerrain() {
-		Brush grassBrush = new Brush("grass");
-		
-		int count = mapWidth / segmentWidth;
-		float[][] xy = new float[count][8];
-		float[][] uv = new float[count][8];
-		int[] height = new int[count + 1];
-		
-		for (int x = 0; x <= count; x++) {
-			height[x] = ymax - 50 + (int) (25 - 50 * Math.random());
-		}
-		for (int i = 0; i < 30; i++) {
-			for (int x = 0; x < count; x++) {
-				height[x] = (height[x] + height[x + 1]) / 2;
-			}
-		}
-		for (int x = 0; x <= count; x++) {
-			height[x] += (int) (2 - 4 * Math.random());
-		}
-		
-		for (int x = 0; x < count; x++) {
-			xy[x][0] = segmentWidth * x;
-			xy[x][1] = height[x];
-			xy[x][2] = segmentWidth * x;
-			xy[x][3] = ymax;
-			xy[x][4] = segmentWidth * (x + 1);
-			xy[x][5] = ymax;
-			xy[x][6] = segmentWidth * (x + 1);
-			xy[x][7] = height[x + 1];
-			for (int j = 0; j < 8; j++) {
-				uv[x][j] = xy[x][j] / 50;
-			}
-			uv[x][1] = 0;
-			uv[x][3] = 1;
-			uv[x][5] = 1;
-			uv[x][7] = 0;
-		}
-		Shape grassShape = shapeFactory.createPolygons(xy, uv);
-		grassShape.setBrush(grassBrush);
-		
-		mapHeight = height;
 	}
 
 	@Override
 	protected void onResolutionChange(int width, int height) {
-		shapeFactory.setBuffer(getBuffer());
-		shapeFactory.setVirtualResolution(0, 0, xmax, ymax);
+		context.shapeFactory.setBuffer(getBuffer());
+		context.shapeFactory.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
-		blittingEngine.setBuffer(getBuffer());
-		blittingEngine.setVirtualResolution(0, 0, xmax, ymax);
+		context.blittingEngine.setBuffer(getBuffer());
+		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 	}
 
 	@Override
 	protected void update(double time) {
 		long ms = SystemClock.uptimeMillis();
 		
-		for (Cloud c:cloudList) {
-			c.x += time * c.xSpeed;
-			c.cloud.setPosition(c.x, c.y);
-			if (c.x > mapWidth) {
-				c.x = -400;
-			}
-		}
+		context.sky.update(time);
+		context.terrain.update(time);
 		
 		rotorShape.setScale(Math.abs((float) Math.cos(ms / 20.0)), 1f);
+		
+		SimpleVector acc = acceleration.get();
+		float roll = (float) Math.atan2(acc.x, acc.z);
+		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
+		angle *= -0.5f;
+		heliShape.setRotation(angle);
+		rotorShape.setRotation(angle);
 	}
 
 	@Override
@@ -174,8 +118,8 @@ public class Game extends AppRenderer {
 
 	@Override
 	protected void afterRendering() {
-		blittingEngine.setColor(0, 0, 0);
-		blittingEngine.blitTextLine(font, String.valueOf((int) getFPS()) + " FPS", 0, 0);
+		context.blittingEngine.setColor(0, 0, 0);
+		context.blittingEngine.blitTextLine(context.font, String.valueOf((int) getFPS()) + " FPS", 0, 0);
 	}
 
 	@Override
