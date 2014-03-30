@@ -51,8 +51,6 @@ public class Game extends AppRenderer {
 		context.blittingEngine = new BlittingEngine(getBuffer());
 		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
-		context.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
-		
 		
 		
 		GameRessources res = new GameRessources();
@@ -60,6 +58,8 @@ public class Game extends AppRenderer {
 		res.skyImg = new ImageDescription("sky", false, true);
 		
 		res.cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
+		
+		res.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
 		
 		context.res = res;
 		
@@ -112,7 +112,7 @@ public class Game extends AppRenderer {
 	@Override
 	protected void afterRendering() {
 		context.blittingEngine.setColor(0, 0, 0);
-		context.blittingEngine.blitTextLine(context.font, String.valueOf((int) getFPS()) + " FPS", 0, 0);
+		context.blittingEngine.blitTextLine(context.res.font, String.valueOf((int) getFPS()) + " FPS", 0, 0);
 	}
 
 	@Override

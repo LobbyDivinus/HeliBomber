@@ -1,7 +1,6 @@
 package info.flowersoft.helibomber;
 
 import info.flowersoft.gameframe.BlittingEngine;
-import info.flowersoft.gameframe.description.FontDescription;
 import info.flowersoft.gameframe.shape.ShapeFactory;
 
 public class GameContext {
@@ -19,8 +18,6 @@ public class GameContext {
 	public ShapeFactory shapeFactory;
 	
 	public BlittingEngine blittingEngine;
-	
-	public FontDescription font;
 	
 	public float camX;
 	
