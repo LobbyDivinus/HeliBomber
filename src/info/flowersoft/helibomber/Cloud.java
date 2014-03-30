@@ -15,6 +15,8 @@ public class Cloud {
 	float xSpeed;
 	
 	public Cloud(GameContext context) {
+		this.context = context;
+		
 		int size = (int) (100 * Math.random()) + 300;
 		int frame = (int) (8 * Math.random());
 		int trans = (int) (16 * Math.random());

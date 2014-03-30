@@ -17,12 +17,6 @@ import info.flowersoft.gameframe.shape.Shape;
 import info.flowersoft.gameframe.shape.ShapeFactory;
 
 public class Game extends AppRenderer {
-
-	private int segmentWidth = 10;
-	
-	private int mapWidth = 8000;
-	
-	private int[] mapHeight;
 	
 	private GameContext context;
 	
@@ -51,6 +45,9 @@ public class Game extends AppRenderer {
 		
 		context.xmax = 800;
 		context.ymax = context.xmax * h / w;
+		
+		context.mapWidth = 8000;
+		context.segmentWidth = 10;
 		
 		context.shapeFactory = new ShapeFactory(getWorld(), getBuffer());
 		context.shapeFactory.setVirtualResolution(0, 0, context.xmax, context.ymax);

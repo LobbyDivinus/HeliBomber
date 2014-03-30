@@ -24,7 +24,7 @@ public class Terrain {
 		float[][] uv = new float[width][8];
 		
 		for (int x = 0; x <= width; x++) {
-			height[x] = context.ymax - 50 + (int) (25 - 50 * Math.random());
+			height[x] = (float) (context.ymax - 50 + 25 - 50 * Math.random());
 		}
 		for (int i = 0; i < 30; i++) {
 			for (int x = 0; x < width; x++) {
@@ -32,7 +32,7 @@ public class Terrain {
 			}
 		}
 		for (int x = 0; x <= width; x++) {
-			height[x] += (int) (2 - 4 * Math.random());
+			height[x] += 1 - 2 * Math.random();
 		}
 		
 		for (int x = 0; x < width; x++) {
