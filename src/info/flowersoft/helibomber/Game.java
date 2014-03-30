@@ -1,8 +1,5 @@
 package info.flowersoft.helibomber;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.threed.jpct.SimpleVector;
 
 import android.content.Context;
@@ -10,7 +7,6 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
-import info.flowersoft.gameframe.description.Brush;
 import info.flowersoft.gameframe.description.FontDescription;
 import info.flowersoft.gameframe.description.ImageDescription;
 import info.flowersoft.gameframe.shape.Shape;
