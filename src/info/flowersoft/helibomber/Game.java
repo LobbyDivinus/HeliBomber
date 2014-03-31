@@ -1,5 +1,7 @@
 package info.flowersoft.helibomber;
 
+import java.util.ArrayList;
+
 import com.threed.jpct.SimpleVector;
 
 import android.content.Context;
@@ -37,6 +39,8 @@ public class Game extends AppRenderer {
 		loadTexture("rotor2", R.raw.rotor2, true);
 		loadTexture("font", R.raw.font, true);
 		
+		
+		
 		context = new GameContext();
 		
 		context.xmax = 800;
@@ -59,6 +63,8 @@ public class Game extends AppRenderer {
 		
 		res.cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
 		
+		res.tankImg = new ImageDescription("tank", 90, 36, 3, true);
+		
 		res.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
 		
 		context.res = res;
@@ -68,6 +74,8 @@ public class Game extends AppRenderer {
 		context.sky = new Sky(context);
 		
 		context.terrain = new Terrain(context);
+		
+		context.vehicleList = new ArrayList<Vehicle>();
 		
 		
 		heliShape = context.shapeFactory.createImage(

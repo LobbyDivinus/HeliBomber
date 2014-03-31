@@ -9,6 +9,8 @@ public class GameRessources {
 	
 	public ImageDescription cloudImg;
 	
+	public ImageDescription tankImg;
+	
 	public FontDescription font;
 	
 }
