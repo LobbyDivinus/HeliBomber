@@ -1,5 +1,7 @@
 package info.flowersoft.helibomber;
 
+import com.threed.jpct.SimpleVector;
+
 import info.flowersoft.gameframe.description.Brush;
 import info.flowersoft.gameframe.shape.Shape;
 
@@ -60,4 +62,36 @@ public class Terrain {
 	public void update(double time) {
 		shape.setPosition(-context.camX, -context.camY);
 	}
+	
+	public float getY(float x) {
+		if (x < 0) {
+			return height[0];
+		} else if (x >= context.mapWidth) {
+			return height[height.length - 1];
+		} else {
+			int startIdx = (int) (x / context.segmentWidth);
+			if (x == startIdx * context.segmentWidth) {
+				return height[startIdx];
+			} else {
+				int endIdx = startIdx + 1;
+				float p = (x - startIdx * context.segmentWidth) / context.segmentWidth;
+				float y = height[startIdx] + p * (height[endIdx] - height[startIdx]);
+				return y;
+			}
+		}
+	}
+	
+	public SimpleVector getNormal(float x) {
+		float width = 1f;
+		
+		float leftY = getY(x - width / 2);
+		float rightY = getY(x + width / 2);
+		
+		float incline = (rightY - leftY) / width;
+		
+		SimpleVector result = new SimpleVector(-incline, 1, 0);
+		
+		return result.normalize();
+	}
+	
 }
