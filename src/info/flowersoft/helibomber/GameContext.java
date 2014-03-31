@@ -1,5 +1,7 @@
 package info.flowersoft.helibomber;
 
+import java.util.List;
+
 import info.flowersoft.gameframe.BlittingEngine;
 import info.flowersoft.gameframe.shape.ShapeFactory;
 
@@ -26,5 +28,7 @@ public class GameContext {
 	public Sky sky;
 	
 	public Terrain terrain;
+	
+	public List<Vehicle> vehicleList;
 	
 }
