@@ -5,10 +5,8 @@ import com.threed.jpct.SimpleVector;
 import info.flowersoft.gameframe.description.Brush;
 import info.flowersoft.gameframe.shape.Shape;
 
-public class Terrain {
+public class Terrain extends GameUpdateable {
 
-	private GameContext context;
-	
 	private Shape shape;
 	
 	private int width;
@@ -16,7 +14,7 @@ public class Terrain {
 	private float[] height;
 	
 	public Terrain(GameContext context) {
-		this.context = context;
+		super(context);
 		
 		width = context.mapWidth / context.segmentWidth;
 		
@@ -81,9 +79,7 @@ public class Terrain {
 		}
 	}
 	
-	public SimpleVector getNormal(float x) {
-		float width = 1f;
-		
+	public SimpleVector getNormal(float x, float width) {
 		float leftY = getY(x - width / 2);
 		float rightY = getY(x + width / 2);
 		
@@ -92,6 +88,15 @@ public class Terrain {
 		SimpleVector result = new SimpleVector(-incline, 1, 0);
 		
 		return result.normalize();
+	}
+	
+	public float getAngle(float x, float width) {
+		float leftY = getY(x - width / 2);
+		float rightY = getY(x + width / 2);
+		
+		float incline = (rightY - leftY) / width;
+		
+		return (float) Math.atan2(-incline, 1);
 	}
 	
 }

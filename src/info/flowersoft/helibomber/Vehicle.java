@@ -1,15 +1,11 @@
 package info.flowersoft.helibomber;
 
-abstract public class Vehicle {
-
-	protected GameContext context;
+abstract public class Vehicle extends GameUpdateable {
 	
 	public Vehicle(GameContext context) {
-		this.context = context;
-		
-		context.vehicleList.add(this);
+		super(context);
 	}
-	
+
 	abstract public void update(double time);
 	
 }

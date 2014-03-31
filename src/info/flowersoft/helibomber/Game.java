@@ -37,6 +37,8 @@ public class Game extends AppRenderer {
 		loadTexture("heli", R.raw.heli, true);
 		loadTexture("rotor", R.raw.rotor, true);
 		loadTexture("rotor2", R.raw.rotor2, true);
+		loadTexture("tank", R.raw.tank, true);
+		loadTexture("tree", R.raw.tree, true);
 		loadTexture("font", R.raw.font, true);
 		
 		
@@ -55,16 +57,18 @@ public class Game extends AppRenderer {
 		context.blittingEngine = new BlittingEngine(getBuffer());
 		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
+		context.updateables = new ArrayList<GameUpdateable>();
 		
 		
 		GameRessources res = new GameRessources();
 		
 		res.skyImg = new ImageDescription("sky", false, true);
-		
 		res.cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
-		
+		res.heliImg = new ImageDescription("heli", true, true);
+		res.rotorImg = new ImageDescription("rotor", true, true);
+		res.rotor2Img = new ImageDescription("rotor2", true, true);
 		res.tankImg = new ImageDescription("tank", 90, 36, 3, true);
-		
+		res.treeImg = new ImageDescription("tree", true, true);
 		res.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
 		
 		context.res = res;
@@ -75,15 +79,14 @@ public class Game extends AppRenderer {
 		
 		context.terrain = new Terrain(context);
 		
-		context.vehicleList = new ArrayList<Vehicle>();
 		
+		context.player = new Helicopter(400, 300, context);
 		
-		heliShape = context.shapeFactory.createImage(
-				new ImageDescription("heli", true, true), context.xmax / 2, context.ymax / 2);
-		heliShape.midPivot();
-		rotorShape = context.shapeFactory.createImage(
-				new ImageDescription("rotor", true, true), context.xmax / 2, context.ymax / 2);
-		rotorShape.midPivot();
+		new Tank(300, context);
+		
+		for (int i = 0; i < 100; i++) {
+			new Tree((float) (context.mapWidth * Math.random()), context);
+		}
 	}
 
 	@Override
@@ -99,17 +102,15 @@ public class Game extends AppRenderer {
 	protected void update(double time) {
 		long ms = SystemClock.uptimeMillis();
 		
-		context.sky.update(time);
-		context.terrain.update(time);
-		
-		rotorShape.setScale(Math.abs((float) Math.cos(ms / 20.0)), 1f);
+		for (GameUpdateable upl:context.updateables) {
+			upl.update(time);
+		}
 		
 		SimpleVector acc = acceleration.get();
 		float roll = (float) Math.atan2(acc.x, acc.z);
 		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
 		angle *= -0.5f;
-		heliShape.setRotation(angle);
-		rotorShape.setRotation(angle);
+		context.player.tilt(angle);
 	}
 
 	@Override

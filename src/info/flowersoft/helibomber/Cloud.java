@@ -2,10 +2,8 @@ package info.flowersoft.helibomber;
 
 import info.flowersoft.gameframe.shape.Shape;
 
-public class Cloud {
+public class Cloud extends GameUpdateable {
 
-	GameContext context;
-	
 	Shape shape;
 	
 	float x;
@@ -15,7 +13,7 @@ public class Cloud {
 	float xSpeed;
 	
 	public Cloud(GameContext context) {
-		this.context = context;
+		super(context);
 		
 		int size = (int) (100 * Math.random()) + 300;
 		int frame = (int) (8 * Math.random());

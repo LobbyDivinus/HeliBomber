@@ -29,6 +29,8 @@ public class GameContext {
 	
 	public Terrain terrain;
 	
-	public List<Vehicle> vehicleList;
+	public Helicopter player;
+	
+	public List<GameUpdateable> updateables;
 	
 }

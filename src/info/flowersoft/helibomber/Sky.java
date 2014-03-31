@@ -5,13 +5,15 @@ import java.util.List;
 
 import info.flowersoft.gameframe.shape.Shape;
 
-public class Sky {
+public class Sky extends GameUpdateable {
 
 	private Shape background;
 	
 	private List<Cloud> cloudList;
 	
 	public Sky(GameContext context) {
+		super(context);
+		
 		background = context.shapeFactory.createImage(context.res.skyImg, 0, 0, context.xmax, context.ymax, 0);
 		background.setOrder(1000);
 		
@@ -23,8 +25,6 @@ public class Sky {
 	}
 	
 	public void update(double time) {
-		for (Cloud cloud:cloudList) {
-			cloud.update(time);
-		}
+		
 	}
 }

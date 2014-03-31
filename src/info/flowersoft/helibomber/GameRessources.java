@@ -9,7 +9,15 @@ public class GameRessources {
 	
 	public ImageDescription cloudImg;
 	
+	public ImageDescription heliImg;
+	
+	public ImageDescription rotorImg;
+	
+	public ImageDescription rotor2Img;
+	
 	public ImageDescription tankImg;
+	
+	public ImageDescription treeImg;
 	
 	public FontDescription font;
 	
