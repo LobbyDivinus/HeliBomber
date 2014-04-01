@@ -17,7 +17,7 @@ public class Cloud extends GameUpdateable {
 	public Cloud(GameContext context) {
 		super(context);
 		
-		size = (int) (100 * Math.random()) + 300;
+		size = (int) (200 * Math.random()) + 300;
 		int frame = (int) (8 * Math.random());
 		int trans = (int) (16 * Math.random());
 		

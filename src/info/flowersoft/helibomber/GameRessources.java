@@ -23,4 +23,8 @@ public class GameRessources {
 	
 	public ImageDescription buttonImg;
 	
+	public ImageDescription heliGunImg;
+	
+	public ImageDescription tankGunImg;
+	
 }

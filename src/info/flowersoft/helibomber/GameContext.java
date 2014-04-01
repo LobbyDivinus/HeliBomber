@@ -33,4 +33,6 @@ public class GameContext {
 	
 	public List<GameUpdateable> updateables;
 	
+	public int objectOrder;
+	
 }

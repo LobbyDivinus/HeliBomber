@@ -10,11 +10,14 @@ import android.os.SystemClock;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
 import info.flowersoft.gameframe.Button;
+import info.flowersoft.gameframe.TouchFrame;
 import info.flowersoft.gameframe.description.FontDescription;
 import info.flowersoft.gameframe.description.ImageDescription;
+import info.flowersoft.gameframe.description.ScreenRect;
 import info.flowersoft.gameframe.shape.ImageShape;
 import info.flowersoft.gameframe.shape.Shape;
 import info.flowersoft.gameframe.shape.ShapeFactory;
+import info.flowersoft.gameframe.touch.TouchPoint;
 
 public class Game extends AppRenderer {
 	
@@ -26,6 +29,8 @@ public class Game extends AppRenderer {
 	private AccelerationVector acceleration;
 	
 	private Button cmdForce;
+	
+	public TouchFrame frame;
 	
 	public Game(Bundle savedInstance, Context con) {
 		super(savedInstance, con);
@@ -45,7 +50,8 @@ public class Game extends AppRenderer {
 		loadTexture("tree", R.raw.tree, true);
 		loadTexture("font", R.raw.font, true);
 		loadTexture("button", R.raw.button, true);
-		
+		loadTexture("heligun", R.raw.gun, true);
+		loadTexture("tankgun", R.raw.gun2, true);
 		
 		context = new GameContext();
 		
@@ -75,6 +81,8 @@ public class Game extends AppRenderer {
 		res.treeImg = new ImageDescription("tree", true, true);
 		res.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
 		res.buttonImg = new ImageDescription("button", 100, 60, 2, true);
+		res.heliGunImg = new ImageDescription("heligun", true, true);
+		res.tankGunImg = new ImageDescription("tankgun", true, true);
 		
 		context.res = res;
 		
@@ -89,10 +97,12 @@ public class Game extends AppRenderer {
 		
 		new Tank(300, context);
 		
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 50; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
 		}
 		
+		frame = new TouchFrame(new ScreenRect(0, 0, getWidth(), getHeight()));
+		registerTouchable(frame);
 		
 		ImageShape btn = context.shapeFactory.createImage(res.buttonImg, context.xmax - 100, context.ymax - 60);
 		btn.setOrder(-1000);
@@ -121,7 +131,6 @@ public class Game extends AppRenderer {
 		SimpleVector acc = acceleration.get();
 		float roll = (float) Math.atan2(acc.x, acc.z);
 		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
-		angle *= -1f;
 		context.player.tilt(angle);
 		
 		if (cmdForce.isPressed()) {
@@ -133,6 +142,13 @@ public class Game extends AppRenderer {
 		context.camX += 2 * time * (
 				Math.max(Math.min(context.player.getX() - context.xmax / 2, context.mapWidth - context.xmax), 0)
 				- context.camX);
+		
+		if (frame.isPressed()) {
+			TouchPoint tp = frame.getTouchPoint();
+			context.player.setGunTarget(
+					tp.getX() * context.xmax / getWidth() + context.camX,
+					tp.getY() * context.ymax / getHeight() + context.camY);
+		}
 	}
 
 	@Override

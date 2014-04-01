@@ -79,6 +79,10 @@ public class Terrain extends GameUpdateable {
 		}
 	}
 	
+	public float getY(float x, float width) {
+		return (getY(x - width / 2) + getY(x + width / 2)) / 2;
+	}
+	
 	public SimpleVector getNormal(float x, float width) {
 		float leftY = getY(x - width / 2);
 		float rightY = getY(x + width / 2);
@@ -96,7 +100,7 @@ public class Terrain extends GameUpdateable {
 		
 		float incline = (rightY - leftY) / width;
 		
-		return (float) Math.atan2(-incline, 1);
+		return (float) Math.atan2(incline, 1);
 	}
 	
 }

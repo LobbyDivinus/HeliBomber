@@ -10,9 +10,17 @@ public class Helicopter extends Vehicle {
 	
 	Shape rotor2;
 	
+	Shape gun;
+	
 	float x;
 	
 	float y;
+	
+	float gunX;
+	
+	float gunY;
+	
+	float gunAngle;
 	
 	float angle;
 	
@@ -33,12 +41,19 @@ public class Helicopter extends Vehicle {
 		
 		shape = context.shapeFactory.createImage(context.res.heliImg, x, y);
 		shape.midPivot();
+		shape.setOrder(context.objectOrder--);
 		
 		rotor = context.shapeFactory.createImage(context.res.rotorImg, x, y);
 		rotor.midPivot();
+		rotor.setOrder(context.objectOrder);
 		
 		rotor2 = context.shapeFactory.createImage(context.res.rotor2Img, x, y);
 		rotor2.midPivot();
+		rotor2.setOrder(context.objectOrder);
+		
+		gun = context.shapeFactory.createImage(context.res.heliGunImg, x, y);
+		gun.midPivot();
+		gun.setOrder(context.objectOrder--);
 		
 		this.x = x;
 		this.y = y;
@@ -61,6 +76,10 @@ public class Helicopter extends Vehicle {
 	public float getY() {
 		return y;
 	}
+	
+	public void setGunTarget(float x, float y) {
+		gunAngle = (float) Math.atan2(y - gunY, x - gunX);
+	}
 
 	@Override
 	public void update(double time) {
@@ -70,7 +89,7 @@ public class Helicopter extends Vehicle {
 		speed += 4 * time * (targetSpeed - speed);
 		
 		float force = 10 * speed;
-		float forceX = -(float) Math.sin(angle) * force;
+		float forceX = (float) Math.sin(angle) * force;
 		float forceY = -(float) Math.cos(angle) * force + 98.1f;
 		
 		if (y < 60) {
@@ -93,10 +112,10 @@ public class Helicopter extends Vehicle {
 		x += time * xSpeed;
 		y += time * ySpeed;
 		
-		float height = context.terrain.getY(x) - y;
-		if (height < 5) {
-			angle += 16 * time * (context.terrain.getAngle(x, 5) - angle);
-			y = context.terrain.getY(x) - 5;
+		float height = context.terrain.getY(x, 10) - y;
+		if (height < 4) {
+			angle += 16 * time * (context.terrain.getAngle(x, 10) - angle);
+			y = context.terrain.getY(x, 10) - 4;
 			xSpeed *= 0.9f;
 			ySpeed = 0;
 		}
@@ -108,7 +127,15 @@ public class Helicopter extends Vehicle {
 		rotor.setRotation(angle);
 		rotor.setScale((float) Math.abs(Math.cos(sum)), 1);
 		
+		rotor2.setPosition(
+				x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
+				y - context.camY + (float) (35 * Math.sin(angle) - 5 * Math.cos(angle)));
 		rotor2.setRotation(sum);
+		
+		gunX = x + (float) (5 * Math.cos(angle - Math.PI * 3 / 4));
+		gunY = y + (float) (5 * Math.sin(angle - Math.PI * 3 / 4));
+		gun.setPosition(gunX - context.camX, gunY - context.camY);
+		gun.setRotation(gunAngle);
 	}
 
 }
