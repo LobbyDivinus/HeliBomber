@@ -64,7 +64,7 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	public void update(double time) {
-		sum += 2 * time * (speed + 5);
+		sum += 2 * time * (speed + 8);
 		angle += 4 * time * (targetAngle - angle);
 		
 		speed += 4 * time * (targetSpeed - speed);
@@ -72,6 +72,18 @@ public class Helicopter extends Vehicle {
 		float force = 10 * speed;
 		float forceX = -(float) Math.sin(angle) * force;
 		float forceY = -(float) Math.cos(angle) * force + 98.1f;
+		
+		if (y < 60) {
+			forceY += 10 * (60 - y);
+		}
+		
+		if (x < context.xmax / 2) {
+			forceX += context.xmax / 2 - x;
+		}
+		
+		if (x > context.mapWidth - context.xmax / 2) {
+			forceX += context.mapWidth - context.xmax / 2 - x;
+		}
 		
 		xSpeed *= 0.99;
 		ySpeed *= 0.99;

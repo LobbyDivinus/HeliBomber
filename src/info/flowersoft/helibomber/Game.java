@@ -130,7 +130,9 @@ public class Game extends AppRenderer {
 			context.player.control(0);
 		}
 		
-		context.camX = context.player.getX() - context.xmax / 2;
+		context.camX += 2 * time * (
+				Math.max(Math.min(context.player.getX() - context.xmax / 2, context.mapWidth - context.xmax), 0)
+				- context.camX);
 	}
 
 	@Override
