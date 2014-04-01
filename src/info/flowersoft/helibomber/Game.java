@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
+import info.flowersoft.gameframe.Button;
 import info.flowersoft.gameframe.description.FontDescription;
 import info.flowersoft.gameframe.description.ImageDescription;
+import info.flowersoft.gameframe.shape.ImageShape;
 import info.flowersoft.gameframe.shape.Shape;
 import info.flowersoft.gameframe.shape.ShapeFactory;
 
@@ -22,6 +24,8 @@ public class Game extends AppRenderer {
 	private Shape rotorShape;
 	
 	private AccelerationVector acceleration;
+	
+	private Button cmdForce;
 	
 	public Game(Bundle savedInstance, Context con) {
 		super(savedInstance, con);
@@ -40,7 +44,7 @@ public class Game extends AppRenderer {
 		loadTexture("tank", R.raw.tank, true);
 		loadTexture("tree", R.raw.tree, true);
 		loadTexture("font", R.raw.font, true);
-		
+		loadTexture("button", R.raw.button, true);
 		
 		
 		context = new GameContext();
@@ -70,6 +74,7 @@ public class Game extends AppRenderer {
 		res.tankImg = new ImageDescription("tank", 90, 36, 3, true);
 		res.treeImg = new ImageDescription("tree", true, true);
 		res.font = new FontDescription("font", true, 22, 47, ' ', Character.MAX_VALUE);
+		res.buttonImg = new ImageDescription("button", 100, 60, 2, true);
 		
 		context.res = res;
 		
@@ -84,9 +89,16 @@ public class Game extends AppRenderer {
 		
 		new Tank(300, context);
 		
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 200; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
 		}
+		
+		
+		ImageShape btn = context.shapeFactory.createImage(res.buttonImg, context.xmax - 100, context.ymax - 60);
+		btn.setOrder(-1000);
+		
+		cmdForce = new Button(btn);
+		registerTouchable(cmdForce);
 	}
 
 	@Override
@@ -109,8 +121,16 @@ public class Game extends AppRenderer {
 		SimpleVector acc = acceleration.get();
 		float roll = (float) Math.atan2(acc.x, acc.z);
 		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
-		angle *= -0.5f;
+		angle *= -1f;
 		context.player.tilt(angle);
+		
+		if (cmdForce.isPressed()) {
+			context.player.control(18);
+		} else {
+			context.player.control(0);
+		}
+		
+		context.camX = context.player.getX() - context.xmax / 2;
 	}
 
 	@Override

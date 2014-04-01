@@ -21,4 +21,6 @@ public class GameRessources {
 	
 	public FontDescription font;
 	
+	public ImageDescription buttonImg;
+	
 }

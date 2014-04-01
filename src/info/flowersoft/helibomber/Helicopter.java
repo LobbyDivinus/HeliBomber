@@ -24,6 +24,8 @@ public class Helicopter extends Vehicle {
 	
 	float speed;
 	
+	float targetSpeed;
+	
 	float sum;
 	
 	public Helicopter(float x, float y, GameContext context) {
@@ -47,13 +49,27 @@ public class Helicopter extends Vehicle {
 	public void tilt(float targetAngle) {
 		this.targetAngle = targetAngle;
 	}
+	
+	public void control(float targetSpeed) {
+		this.targetSpeed = targetSpeed;
+	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
+	}
 
 	@Override
 	public void update(double time) {
 		float height = context.terrain.getY(x) - y;
 		
-		sum += time * speed;
+		sum += 2 * time * (speed + 5);
 		angle += 10 * time * (targetAngle - angle);
+		
+		speed += 4 * time * (targetSpeed - speed);
 		
 		float force = 10 * speed;
 		float forceX = -(float) Math.sin(angle) * force;
@@ -67,10 +83,10 @@ public class Helicopter extends Vehicle {
 		x += time * xSpeed;
 		y += time * ySpeed;
 		
-		shape.setPosition(x, y);
+		shape.setPosition(x - context.camX, y - context.camY);
 		shape.setRotation(angle);
 		
-		rotor.setPosition(x, y);
+		rotor.setPosition(x - context.camX, y - context.camY);
 		rotor.setRotation(angle);
 		rotor.setScale((float) Math.abs(Math.cos(sum)), 1);
 		
