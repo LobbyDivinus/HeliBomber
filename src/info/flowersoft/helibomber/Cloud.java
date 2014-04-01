@@ -12,10 +12,12 @@ public class Cloud extends GameUpdateable {
 	
 	float xSpeed;
 	
+	int size;
+	
 	public Cloud(GameContext context) {
 		super(context);
 		
-		int size = (int) (100 * Math.random()) + 300;
+		size = (int) (100 * Math.random()) + 300;
 		int frame = (int) (8 * Math.random());
 		int trans = (int) (16 * Math.random());
 		
@@ -33,10 +35,15 @@ public class Cloud extends GameUpdateable {
 	public void update(double time) {
 		x += time * xSpeed;
 		if (x > context.mapWidth) {
-			x = -300;
+			x = -size;
 		}
 		
-		shape.setPosition(x - context.camX, y - context.camY);
+		if (x - context.camX >= -size && x - context.camX <= context.xmax) {
+			shape.setPosition(x - context.camX, y - context.camY);
+			shape.show();
+		} else {
+			shape.hide();
+		}
 	}
 	
 }

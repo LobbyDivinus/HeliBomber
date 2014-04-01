@@ -1,5 +1,8 @@
 package info.flowersoft.helibomber;
 
+import com.threed.jpct.Object3D;
+import com.threed.jpct.World;
+
 import info.flowersoft.gameframe.shape.ImageShape;
 
 public class Tree extends GameUpdateable {
@@ -19,7 +22,7 @@ public class Tree extends GameUpdateable {
 		y = context.terrain.getY(x);
 		angle = context.terrain.getAngle(x, 5);
 		
-		shape = context.shapeFactory.createImage(context.res.treeImg, x, x);
+		shape = context.shapeFactory.createImage(context.res.treeImg, x, y);
 		shape.midPivot();
 		
 		if (Math.random() < 0.5) {
@@ -31,7 +34,12 @@ public class Tree extends GameUpdateable {
 
 	@Override
 	public void update(double time) {
-		shape.setPosition(x - context.camX, y - context.camY);
+		if (x - context.camX >= -100 && x - context.camX <= context.xmax + 100) {
+			shape.setPosition(x - context.camX, y - context.camY);
+			shape.show();
+		} else {
+			shape.hide();
+		}
 	}
 
 }
