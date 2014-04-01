@@ -64,10 +64,8 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	public void update(double time) {
-		float height = context.terrain.getY(x) - y;
-		
 		sum += 2 * time * (speed + 5);
-		angle += 10 * time * (targetAngle - angle);
+		angle += 4 * time * (targetAngle - angle);
 		
 		speed += 4 * time * (targetSpeed - speed);
 		
@@ -82,6 +80,14 @@ public class Helicopter extends Vehicle {
 		
 		x += time * xSpeed;
 		y += time * ySpeed;
+		
+		float height = context.terrain.getY(x) - y;
+		if (height < 5) {
+			angle += 16 * time * (context.terrain.getAngle(x, 5) - angle);
+			y = context.terrain.getY(x) - 5;
+			xSpeed *= 0.9f;
+			ySpeed = 0;
+		}
 		
 		shape.setPosition(x - context.camX, y - context.camY);
 		shape.setRotation(angle);
