@@ -27,4 +27,10 @@ public class GameRessources {
 	
 	public ImageDescription tankGunImg;
 	
+	public ImageDescription bulletImg;
+	
+	public ImageDescription explosionImg;
+	
+	public ImageDescription smokeImg;
+	
 }

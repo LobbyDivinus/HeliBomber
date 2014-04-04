@@ -19,7 +19,7 @@ public class Sky extends GameUpdateable {
 		
 		cloudList = new ArrayList<Cloud>();
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 40; i++) {
 			cloudList.add(new Cloud(context));
 		}
 	}

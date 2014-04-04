@@ -1,6 +1,7 @@
 package info.flowersoft.helibomber;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.threed.jpct.SimpleVector;
 
@@ -52,6 +53,9 @@ public class Game extends AppRenderer {
 		loadTexture("button", R.raw.button, true);
 		loadTexture("heligun", R.raw.gun, true);
 		loadTexture("tankgun", R.raw.gun2, true);
+		loadTexture("shot", R.raw.shot, true);
+		loadTexture("explosion", R.raw.explosion, true);
+		loadTexture("smoke", R.raw.smoke, true);
 		
 		context = new GameContext();
 		
@@ -83,6 +87,9 @@ public class Game extends AppRenderer {
 		res.buttonImg = new ImageDescription("button", 100, 60, 2, true);
 		res.heliGunImg = new ImageDescription("heligun", true, true);
 		res.tankGunImg = new ImageDescription("tankgun", true, true);
+		res.bulletImg = new ImageDescription("shot", 8, 3, 2, true);
+		res.explosionImg = new ImageDescription("explosion", true, true);
+		res.smokeImg = new ImageDescription("smoke", true, true);
 		
 		context.res = res;
 		
@@ -97,7 +104,7 @@ public class Game extends AppRenderer {
 		
 		new Tank(300, context);
 		
-		for (int i = 0; i < 50; i++) {
+		for (int i = 0; i < 20; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
 		}
 		
@@ -124,7 +131,7 @@ public class Game extends AppRenderer {
 	protected void update(double time) {
 		long ms = SystemClock.uptimeMillis();
 		
-		for (GameUpdateable upl:context.updateables) {
+		for (GameUpdateable upl:new ArrayList<GameUpdateable>(context.updateables)) {
 			upl.update(time);
 		}
 		
@@ -148,6 +155,10 @@ public class Game extends AppRenderer {
 			context.player.setGunTarget(
 					tp.getX() * context.xmax / getWidth() + context.camX,
 					tp.getY() * context.ymax / getHeight() + context.camY);
+			
+			context.player.setFireMode(true);
+		} else {
+			context.player.setFireMode(false);
 		}
 	}
 

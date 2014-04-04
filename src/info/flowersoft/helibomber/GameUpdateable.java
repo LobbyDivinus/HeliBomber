@@ -10,6 +10,10 @@ public abstract class GameUpdateable {
 		context.updateables.add(this);
 	}
 	
+	public void dispose() {
+		context.updateables.remove(this);
+	}
+	
 	abstract public void update(double time);
 	
 }

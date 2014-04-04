@@ -4,37 +4,41 @@ import info.flowersoft.gameframe.shape.Shape;
 
 public class Helicopter extends Vehicle {
 
-	Shape shape;
+	private Shape shape;
 	
-	Shape rotor;
+	private Shape rotor;
 	
-	Shape rotor2;
+	private Shape rotor2;
 	
-	Shape gun;
+	private Shape gun;
 	
-	float x;
+	private float x;
 	
-	float y;
+	private float y;
 	
-	float gunX;
+	private float gunX;
 	
-	float gunY;
+	private float gunY;
 	
-	float gunAngle;
+	private float gunAngle;
 	
-	float angle;
+	private float angle;
 	
-	float targetAngle;
+	private float targetAngle;
 	
-	float xSpeed;
+	private float xSpeed;
 	
-	float ySpeed;
+	private float ySpeed;
 	
-	float speed;
+	private float speed;
 	
-	float targetSpeed;
+	private float targetSpeed;
 	
-	float sum;
+	private float sum;
+	
+	private boolean fireMode;
+	
+	private float fireCount;
 	
 	public Helicopter(float x, float y, GameContext context) {
 		super(context);
@@ -80,6 +84,21 @@ public class Helicopter extends Vehicle {
 	public void setGunTarget(float x, float y) {
 		gunAngle = (float) Math.atan2(y - gunY, x - gunX);
 	}
+	
+	public void setFireMode(boolean state) {
+		fireMode = state;
+	}
+	
+	private void fire() {
+		new Bullet(
+				this,
+				gunX,
+				gunY,
+				xSpeed,
+				ySpeed,
+				gunAngle,
+				context);
+	}
 
 	@Override
 	public void update(double time) {
@@ -120,22 +139,42 @@ public class Helicopter extends Vehicle {
 			ySpeed = 0;
 		}
 		
-		shape.setPosition(x - context.camX, y - context.camY);
-		shape.setRotation(angle);
+		if (x - context.camX >= -80 && x - context.camX <= context.xmax + 80) {
+			shape.setPosition(x - context.camX, y - context.camY);
+			shape.setRotation(angle);
+			
+			rotor.setPosition(x - context.camX, y - context.camY);
+			rotor.setRotation(angle);
+			rotor.setScale((float) Math.abs(Math.cos(sum)), 1);
+			
+			rotor2.setPosition(
+					x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
+					y - context.camY + (float) (35 * Math.sin(angle) - 5 * Math.cos(angle)));
+			rotor2.setRotation(sum);
+			
+			gunX = x + (float) (5 * Math.cos(angle - Math.PI * 3 / 4));
+			gunY = y + (float) (5 * Math.sin(angle - Math.PI * 3 / 4));
+			gun.setPosition(gunX - context.camX, gunY - context.camY);
+			gun.setRotation(gunAngle);
+			
+			shape.show();
+			rotor.show();
+			rotor2.show();
+			gun.show();
+		} else {
+			shape.hide();
+			rotor.hide();
+			rotor2.hide();
+			gun.hide();
+		}
 		
-		rotor.setPosition(x - context.camX, y - context.camY);
-		rotor.setRotation(angle);
-		rotor.setScale((float) Math.abs(Math.cos(sum)), 1);
-		
-		rotor2.setPosition(
-				x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
-				y - context.camY + (float) (35 * Math.sin(angle) - 5 * Math.cos(angle)));
-		rotor2.setRotation(sum);
-		
-		gunX = x + (float) (5 * Math.cos(angle - Math.PI * 3 / 4));
-		gunY = y + (float) (5 * Math.sin(angle - Math.PI * 3 / 4));
-		gun.setPosition(gunX - context.camX, gunY - context.camY);
-		gun.setRotation(gunAngle);
+		fireCount += time;
+		if (fireMode) {
+			if (fireCount > 0.5f) {
+				fire();
+				fireCount = 0;
+			}
+		}
 	}
 
 }
