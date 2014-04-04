@@ -145,7 +145,7 @@ public class Helicopter extends Vehicle {
 			
 			rotor.setPosition(x - context.camX, y - context.camY);
 			rotor.setRotation(angle);
-			rotor.setScale((float) Math.abs(Math.cos(sum)), 1);
+			rotor.setScale((float) Math.cos(sum), 1);
 			
 			rotor2.setPosition(
 					x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
@@ -170,7 +170,7 @@ public class Helicopter extends Vehicle {
 		
 		fireCount += time;
 		if (fireMode) {
-			if (fireCount > 0.5f) {
+			if (fireCount > 0.75f) {
 				fire();
 				fireCount = 0;
 			}

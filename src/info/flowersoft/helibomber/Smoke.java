@@ -44,7 +44,7 @@ public class Smoke extends GameUpdateable {
 		angleSpeed = 0.5f * (float) (0.5 - Math.random());
 		
 		speedX = 10 * (float) Math.random();
-		speedY = -10 * (float) Math.random() - 20;
+		speedY = -20 * (float) Math.random() - 30;
 	}
 
 	@Override

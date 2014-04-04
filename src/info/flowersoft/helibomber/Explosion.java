@@ -47,14 +47,14 @@ public class Explosion extends GameUpdateable {
 		p += time;
 		smokeTimer += time;
 		
-		if (smokeTimer > 2f) {
+		if (smokeTimer > 5f) {
 			new Smoke(x, y, context);
 			smokeTimer = 0;
 		}
 		
 		if (x - context.camX >= -64 && x - context.camX <= context.xmax + 64) {
 			shape.setScale(0.5f * p, 0.5f * p);
-			shape.getObject().setTransparency((int) (15 - 3 * p));
+			shape.getObject().setTransparency((int) (15 - 5 * p));
 			
 			shape.setPosition(x - context.camX, y - context.camY);
 			shape.show();
@@ -62,7 +62,7 @@ public class Explosion extends GameUpdateable {
 			shape.hide();
 		}
 		
-		if (p > 5) {
+		if (p > 3) {
 			dispose();
 		}
 	}
