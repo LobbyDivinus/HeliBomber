@@ -55,8 +55,8 @@ public class Explosion extends GameUpdateable {
 		}
 		
 		if (x - context.camX >= -64 && x - context.camX <= context.xmax + 64) {
-			shape.setScale(0.5f * p, 0.5f * p);
-			shape.getObject().setTransparency((int) (15 - 5 * p));
+			shape.setScale(2f * p, 2f * p);
+			shape.getObject().setTransparency((int) (15 - 15 * p));
 			
 			shape.setPosition(x - context.camX, y - context.camY);
 			shape.show();
@@ -64,7 +64,7 @@ public class Explosion extends GameUpdateable {
 			shape.hide();
 		}
 		
-		if (p > 3) {
+		if (p > 1) {
 			dispose();
 		}
 	}

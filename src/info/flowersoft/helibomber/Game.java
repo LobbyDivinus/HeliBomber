@@ -114,7 +114,9 @@ public class Game extends AppRenderer {
 		
 		context.player = new Helicopter(600, context);
 		
-		new Tank(300, context);
+		for (int x = 200; x < 1000; x += 160) {
+			new Tank(x, context);
+		}
 		
 		for (int i = 0; i < 20; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
@@ -145,6 +147,12 @@ public class Game extends AppRenderer {
 		
 		for (GameUpdateable upl:new ArrayList<GameUpdateable>(context.updateables)) {
 			upl.update(time);
+		}
+		
+		for (Vehicle v:context.vehicleList) {
+			if (v instanceof Tank) {
+				((Tank) v).setGunTarget(context.player.getCollisionX(), context.player.getCollisionY());
+			}
 		}
 		
 		SimpleVector acc = acceleration.get();

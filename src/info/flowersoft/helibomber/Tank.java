@@ -23,6 +23,8 @@ public class Tank extends Vehicle {
 	
 	private float gunAngle;
 	
+	private float fireCount;
+	
 	public Tank(float x, GameContext context) {
 		super(context);
 		
@@ -37,8 +39,18 @@ public class Tank extends Vehicle {
 		gun.setOrder(context.objectOrder--);
 	}
 
+	private void fire() {
+		new Bullet(this, gunX, gunY, 0, 0, gunAngle, context);
+	}
+	
+	public void setGunTarget(float x, float y) {
+		gunAngle = (float) (Math.atan2(y - gunY, x - gunX));
+	}
+	
 	@Override
 	public void update(double time) {
+		super.update(time);
+		
 		x += 20 * time;
 		
 		angle = context.terrain.getAngle(x, 20);
@@ -54,6 +66,12 @@ public class Tank extends Vehicle {
 		gunY = y - (float) (18 * Math.cos(angle));
 		gun.setPosition(gunX - context.camX, gunY - context.camY);
 		gun.setRotation(gunAngle);
+		
+		fireCount += time;
+		if (fireCount > 0.75f) {
+			fire();
+			fireCount = 0;
+		}
 	}
 
 	@Override

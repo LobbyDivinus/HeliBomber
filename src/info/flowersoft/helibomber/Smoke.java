@@ -58,7 +58,7 @@ public class Smoke extends GameUpdateable {
 		y += time * speedY;
 		
 		if (x - context.camX >= -64 && x - context.camX <= context.xmax + 64) {
-			shape.getObject().setTransparency((int) (15 / (1 + size)));
+			shape.getObject().setTransparency((int) (16 / (1 + size)));
 			
 			shape.setScale(1 + size, 1 + size);
 			shape.setPosition(x - context.camX, y - context.camY);

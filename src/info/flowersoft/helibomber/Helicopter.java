@@ -119,6 +119,8 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	public void update(double time) {
+		super.update(time);
+		
 		sum += 2 * time * (speed + 8);
 		angle += 4 * time * (targetAngle - angle);
 		
@@ -152,6 +154,10 @@ public class Helicopter extends Vehicle {
 		
 		float height = context.terrain.getY(x, 10) - y;
 		if (height < 4) {
+			if (ySpeed > 80) {
+				life -= ySpeed - 80;
+			}
+			
 			angle += 16 * time * (context.terrain.getAngle(x, 10) - angle);
 			y = context.terrain.getY(x, 10) - 4;
 			xSpeed *= 0.9f;
