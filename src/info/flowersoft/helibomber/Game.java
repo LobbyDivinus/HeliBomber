@@ -6,8 +6,13 @@ import java.util.List;
 import com.threed.jpct.SimpleVector;
 
 import android.content.Context;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.SoundPool;
+import android.media.SoundPool.OnLoadCompleteListener;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Log;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
 import info.flowersoft.gameframe.Button;
@@ -71,7 +76,10 @@ public class Game extends AppRenderer {
 		context.blittingEngine = new BlittingEngine(getBuffer());
 		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
+		context.soundPool = new SoundPool(16, AudioManager.STREAM_MUSIC, 100);
+		
 		context.updateables = new ArrayList<GameUpdateable>();
+		context.vehicleList = new ArrayList<Vehicle>();
 		
 		
 		GameRessources res = new GameRessources();
@@ -91,6 +99,10 @@ public class Game extends AppRenderer {
 		res.explosionImg = new ImageDescription("explosion", true, true);
 		res.smokeImg = new ImageDescription("smoke", true, true);
 		
+		res.heliSound = context.soundPool.load(getContext(), R.raw.heli_sound, 1);
+		res.explosionSound = context.soundPool.load(getContext(), R.raw.explosion_sound, 1);
+		res.explosionEarthSound = context.soundPool.load(getContext(), R.raw.earthexplosion_sound, 1);
+		
 		context.res = res;
 		
 		
@@ -100,7 +112,7 @@ public class Game extends AppRenderer {
 		context.terrain = new Terrain(context);
 		
 		
-		context.player = new Helicopter(400, 300, context);
+		context.player = new Helicopter(600, context);
 		
 		new Tank(300, context);
 		
@@ -141,9 +153,9 @@ public class Game extends AppRenderer {
 		context.player.tilt(angle);
 		
 		if (cmdForce.isPressed()) {
-			context.player.control(18);
+			context.player.controlUp();
 		} else {
-			context.player.control(0);
+			context.player.controlDown();
 		}
 		
 		context.camX += 2 * time * (

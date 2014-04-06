@@ -21,7 +21,7 @@ public class Explosion extends GameUpdateable {
 	
 	private float smokeTimer;
 	
-	public Explosion(float x, float y, GameContext context) {
+	public Explosion(float x, float y, int soundID, GameContext context) {
 		super(context);
 		
 		this.x = x;
@@ -40,6 +40,8 @@ public class Explosion extends GameUpdateable {
 		shape.setRotation((float) (2 * Math.PI * Math.random()));
 		
 		smokeTimer = Float.MAX_VALUE;
+		
+		new GameSound(soundID, false, context).setPosition(x, y);
 	}
 
 	@Override

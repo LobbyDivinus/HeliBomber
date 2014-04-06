@@ -33,4 +33,10 @@ public class GameRessources {
 	
 	public ImageDescription smokeImg;
 	
+	public int heliSound;
+	
+	public int explosionSound;
+	
+	public int explosionEarthSound;
+	
 }

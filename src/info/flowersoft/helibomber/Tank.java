@@ -56,4 +56,24 @@ public class Tank extends Vehicle {
 		gun.setRotation(gunAngle);
 	}
 
+	@Override
+	protected float getMaxLife() {
+		return 100;
+	}
+
+	@Override
+	protected float getCollisionX() {
+		return x;
+	}
+
+	@Override
+	protected float getCollisionY() {
+		return y;
+	}
+
+	@Override
+	protected float getCollisionRadius() {
+		return 20;
+	}
+
 }

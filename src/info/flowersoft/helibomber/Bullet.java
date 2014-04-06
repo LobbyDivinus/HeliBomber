@@ -67,10 +67,24 @@ public class Bullet extends GameUpdateable {
 			dispose();
 		} else {
 			// Check for collision with vehicles
+			Vehicle collisionVehicle = null;
 			
-			if (y >= context.terrain.getY(x) - 5) {
+			for (Vehicle v:context.vehicleList) {
+				float cx = v.getCollisionX();
+				float cy = v.getCollisionY();
+				float r = v.getCollisionRadius();
+				if (v != source && (x - cx) * (x - cx) + (y - cy) * (y - cy) <= r * r) {
+					collisionVehicle = v;
+				}
+			}
+			
+			if (collisionVehicle != null) {
+				// Boom on vehicle
+				new Explosion(x, y, context.res.explosionSound, context);
+				dispose();
+			} else if (y >= context.terrain.getY(x)) {
 				// Boom on ground
-				new Explosion(x, context.terrain.getY(x) - 5, context);
+				new Explosion(x, context.terrain.getY(x) - 5, context.res.explosionEarthSound, context);
 				dispose();
 			}
 		}

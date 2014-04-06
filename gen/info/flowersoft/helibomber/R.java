@@ -34,27 +34,30 @@ public final class R {
     }
     public static final class raw {
         public static final int bullet=0x7f040000;
-        public static final int clouds=0x7f040001;
-        public static final int dust=0x7f040002;
-        public static final int earth=0x7f040003;
+        public static final int button=0x7f040001;
+        public static final int clouds=0x7f040002;
+        public static final int earthexplosion_sound=0x7f040003;
         public static final int explosion=0x7f040004;
-        public static final int flag=0x7f040005;
-        public static final int flags=0x7f040006;
-        public static final int font=0x7f040007;
-        public static final int grass=0x7f040008;
-        public static final int gun=0x7f040009;
-        public static final int gun2=0x7f04000a;
-        public static final int header=0x7f04000b;
-        public static final int heli=0x7f04000c;
-        public static final int hshot=0x7f04000d;
-        public static final int logo=0x7f04000e;
-        public static final int rotor=0x7f04000f;
-        public static final int rotor2=0x7f040010;
-        public static final int shot=0x7f040011;
-        public static final int sky=0x7f040012;
-        public static final int tank=0x7f040013;
-        public static final int tree=0x7f040014;
-        public static final int tshot=0x7f040015;
+        public static final int explosion_sound=0x7f040005;
+        public static final int flag=0x7f040006;
+        public static final int flags=0x7f040007;
+        public static final int font=0x7f040008;
+        public static final int grass=0x7f040009;
+        public static final int gun=0x7f04000a;
+        public static final int gun2=0x7f04000b;
+        public static final int header=0x7f04000c;
+        public static final int heli=0x7f04000d;
+        public static final int heli_sound=0x7f04000e;
+        public static final int hshot=0x7f04000f;
+        public static final int logo=0x7f040010;
+        public static final int rotor=0x7f040011;
+        public static final int rotor2=0x7f040012;
+        public static final int shot=0x7f040013;
+        public static final int sky=0x7f040014;
+        public static final int smoke=0x7f040015;
+        public static final int tank=0x7f040016;
+        public static final int tree=0x7f040017;
+        public static final int tshot=0x7f040018;
     }
     public static final class string {
         public static final int action_settings=0x7f060002;

@@ -4,6 +4,10 @@ import info.flowersoft.gameframe.shape.Shape;
 
 public class Helicopter extends Vehicle {
 
+	private final static float MIN_SPEED = 0;
+	
+	private final static float MAX_SPEED = 18;
+	
 	private Shape shape;
 	
 	private Shape rotor;
@@ -40,7 +44,9 @@ public class Helicopter extends Vehicle {
 	
 	private float fireCount;
 	
-	public Helicopter(float x, float y, GameContext context) {
+	private GameSound rotorSound;
+	
+	public Helicopter(float x, GameContext context) {
 		super(context);
 		
 		shape = context.shapeFactory.createImage(context.res.heliImg, x, y);
@@ -60,9 +66,12 @@ public class Helicopter extends Vehicle {
 		gun.setOrder(context.objectOrder--);
 		
 		this.x = x;
-		this.y = y;
+		this.y = context.terrain.getY(x) - 15;
 		
-		speed = 10;
+		speed = MIN_SPEED;
+		targetSpeed = MIN_SPEED;
+		
+		rotorSound = new GameSound(context.res.heliSound, true, context);
 	}
 	
 	public void tilt(float targetAngle) {
@@ -71,6 +80,14 @@ public class Helicopter extends Vehicle {
 	
 	public void control(float targetSpeed) {
 		this.targetSpeed = targetSpeed;
+	}
+	
+	public void controlUp() {
+		control(18);
+	}
+	
+	public void controlDown() {
+		control(0);
 	}
 	
 	public float getX() {
@@ -107,6 +124,8 @@ public class Helicopter extends Vehicle {
 		
 		speed += 4 * time * (targetSpeed - speed);
 		
+		rotorSound.setRate(0.5f + 1.5f * (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED));
+		
 		float force = 10 * speed;
 		float forceX = (float) Math.sin(angle) * force;
 		float forceY = -(float) Math.cos(angle) * force + 98.1f;
@@ -115,11 +134,11 @@ public class Helicopter extends Vehicle {
 			forceY += 10 * (60 - y);
 		}
 		
-		if (x < context.xmax / 2) {
+		if (x < 200) {
 			forceX += context.xmax / 2 - x;
 		}
 		
-		if (x > context.mapWidth - context.xmax / 2) {
+		if (x > context.mapWidth - 200) {
 			forceX += context.mapWidth - context.xmax / 2 - x;
 		}
 		
@@ -177,4 +196,24 @@ public class Helicopter extends Vehicle {
 		}
 	}
 
+	@Override
+	protected float getMaxLife() {
+		return 100;
+	}
+
+	@Override
+	protected float getCollisionX() {
+		return x;
+	}
+
+	@Override
+	protected float getCollisionY() {
+		return y;
+	}
+
+	@Override
+	protected float getCollisionRadius() {
+		return 20;
+	}
+	
 }
