@@ -15,6 +15,8 @@ abstract public class Vehicle extends GameUpdateable {
 		
 		alive = true;
 		life = getMaxLife();
+		
+		onSpawn();
 	}
 	
 	public void dispose() {
@@ -29,6 +31,8 @@ abstract public class Vehicle extends GameUpdateable {
 
 	public void update(double time) {
 		if (alive) {
+			updateAliveVehicle(time);
+			
 			if (life < getMaxLife() / 2) {
 				smokeCount += time;
 				if (smokeCount >= 1) {
@@ -36,11 +40,13 @@ abstract public class Vehicle extends GameUpdateable {
 					smokeCount = 0;
 				}
 			}
+		} else {
+			updateDeadVehicle(time);
 		}
 		
 		if (alive && life <= 0) {
 			alive = false;
-			// onDead();
+			onDead();
 			float x = getCollisionX();
 			float y = getCollisionY();
 			float r = getCollisionRadius();
@@ -56,6 +62,14 @@ abstract public class Vehicle extends GameUpdateable {
 	public boolean isAlive() {
 		return alive;
 	}
+	
+	abstract protected void updateAliveVehicle(double time);
+	
+	abstract protected void updateDeadVehicle(double time);
+	
+	abstract protected void onSpawn();
+	
+	abstract protected void onDead();
 	
 	abstract protected float getMaxLife();
 	

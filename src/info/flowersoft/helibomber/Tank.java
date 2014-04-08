@@ -48,9 +48,7 @@ public class Tank extends Vehicle {
 	}
 	
 	@Override
-	public void update(double time) {
-		super.update(time);
-		
+	public void updateAliveVehicle(double time) {
 		x += 20 * time;
 		
 		angle = context.terrain.getAngle(x, 20);
@@ -73,6 +71,11 @@ public class Tank extends Vehicle {
 			fireCount = 0;
 		}
 	}
+	
+	@Override
+	protected void updateDeadVehicle(double time) {
+		
+	}
 
 	@Override
 	protected float getMaxLife() {
@@ -92,6 +95,17 @@ public class Tank extends Vehicle {
 	@Override
 	protected float getCollisionRadius() {
 		return 20;
+	}
+
+	@Override
+	protected void onSpawn() {
+		
+	}
+
+	@Override
+	protected void onDead() {
+		shape.hide();
+		gun.hide();
 	}
 
 }

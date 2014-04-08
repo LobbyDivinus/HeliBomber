@@ -116,11 +116,9 @@ public class Helicopter extends Vehicle {
 				gunAngle,
 				context);
 	}
-
+	
 	@Override
-	public void update(double time) {
-		super.update(time);
-		
+	protected void updateAliveVehicle(double time) {
 		sum += 2 * time * (speed + 8);
 		angle += 4 * time * (targetAngle - angle);
 		
@@ -203,6 +201,11 @@ public class Helicopter extends Vehicle {
 	}
 
 	@Override
+	protected void updateDeadVehicle(double time) {
+		
+	}
+	
+	@Override
 	protected float getMaxLife() {
 		return 100;
 	}
@@ -220,6 +223,19 @@ public class Helicopter extends Vehicle {
 	@Override
 	protected float getCollisionRadius() {
 		return 20;
+	}
+
+	@Override
+	protected void onSpawn() {
+		
+	}
+
+	@Override
+	protected void onDead() {
+		shape.hide();
+		rotor.hide();
+		rotor2.hide();
+		gun.hide();
 	}
 	
 }
