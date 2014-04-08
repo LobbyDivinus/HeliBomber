@@ -1,5 +1,6 @@
 package info.flowersoft.helibomber;
 
+import info.flowersoft.gameframe.shape.ImageShape;
 import info.flowersoft.gameframe.shape.Shape;
 
 public class Helicopter extends Vehicle {
@@ -8,7 +9,7 @@ public class Helicopter extends Vehicle {
 	
 	private final static float MAX_SPEED = 18;
 	
-	private Shape shape;
+	private ImageShape shape;
 	
 	private Shape rotor;
 	
@@ -202,7 +203,11 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	protected void updateDeadVehicle(double time) {
-		
+		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
+			shape.show();
+		} else {
+			shape.hide();
+		}
 	}
 	
 	@Override
@@ -227,12 +232,13 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	protected void onSpawn() {
-		
+		shape.setFrame(0);
 	}
 
 	@Override
 	protected void onDead() {
-		shape.hide();
+		shape.setFrame(1);
+		
 		rotor.hide();
 		rotor2.hide();
 		gun.hide();

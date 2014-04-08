@@ -86,7 +86,7 @@ public class Game extends AppRenderer {
 		
 		res.skyImg = new ImageDescription("sky", false, true);
 		res.cloudImg = new ImageDescription("clouds", 128, 128, 8, true);
-		res.heliImg = new ImageDescription("heli", true, true);
+		res.heliImg = new ImageDescription("heli", 128, 32, 2, true);
 		res.rotorImg = new ImageDescription("rotor", true, true);
 		res.rotor2Img = new ImageDescription("rotor2", true, true);
 		res.tankImg = new ImageDescription("tank", 90, 36, 3, true);

@@ -74,7 +74,11 @@ public class Tank extends Vehicle {
 	
 	@Override
 	protected void updateDeadVehicle(double time) {
-		
+		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
+			shape.show();
+		} else {
+			shape.hide();
+		}
 	}
 
 	@Override
@@ -104,7 +108,8 @@ public class Tank extends Vehicle {
 
 	@Override
 	protected void onDead() {
-		shape.hide();
+		shape.setFrame(2);
+		
 		gun.hide();
 	}
 

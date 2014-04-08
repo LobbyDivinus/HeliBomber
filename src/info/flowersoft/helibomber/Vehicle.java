@@ -15,8 +15,6 @@ abstract public class Vehicle extends GameUpdateable {
 		
 		alive = true;
 		life = getMaxLife();
-		
-		onSpawn();
 	}
 	
 	public void dispose() {
