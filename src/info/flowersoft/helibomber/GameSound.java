@@ -43,11 +43,10 @@ public class GameSound extends GameUpdateable {
 
 	@Override
 	public void update(double time) {
-		float align = (x - context.camX - context.xmax / 2f);
-		volumeLeft = - align;
-		volumeRight = align;
-		if (volumeLeft < 0) {volumeLeft = 0;}
-		if (volumeRight < 0) {volumeRight = 0;}
+		float align = 8f * (x - context.camX - context.xmax / 2f) / context.xmax;
+		align = align / (1 + Math.abs(align));
+		volumeLeft = (0.5f - 0.5f * align) * (1 - Math.abs(align));
+		volumeRight = (0.5f + 0.5f * align) * (1 - Math.abs(align));
 		
 		if (streamID == 0) {
 			int loop = 0;
