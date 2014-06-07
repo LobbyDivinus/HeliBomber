@@ -154,6 +154,8 @@ public class Helicopter extends Vehicle {
 	
 	@Override
 	public void drawDeadVehicle() {
+		shape.setPosition(x - context.camX, y - context.camY);
+		shape.setRotation(angle);
 	}
 	
 	@Override
@@ -213,6 +215,24 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	protected void updateDeadVehicle(double time) {
+		xSpeed *= 0.99;
+		ySpeed *= 0.99;
+		ySpeed += time * 98.1;
+		
+		x += time * xSpeed;
+		y += time * ySpeed;
+		
+		float height = context.terrain.getY(x, 10) - y;
+		if (height < 4) {
+			if (ySpeed > 80) {
+				life -= ySpeed - 80;
+			}
+			
+			angle += 16 * time * (context.terrain.getAngle(x, 10) - angle);
+			y = context.terrain.getY(x, 10) - 4;
+			xSpeed *= 0.9f;
+			ySpeed = 0;
+		}
 	}
 	
 	@Override
