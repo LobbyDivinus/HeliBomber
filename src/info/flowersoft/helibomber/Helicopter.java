@@ -164,6 +164,7 @@ public class Helicopter extends Vehicle {
 		speed += 4 * time * (targetSpeed - speed);
 		
 		rotorSound.setRate(0.5f + 1.5f * (speed - MIN_SPEED) / (MAX_SPEED - MIN_SPEED));
+		rotorSound.setPosition(x, y);
 		
 		float force = 10 * speed;
 		float forceX = (float) Math.sin(angle) * force;
@@ -237,6 +238,8 @@ public class Helicopter extends Vehicle {
 	@Override
 	protected void onSpawn() {
 		shape.setFrame(0);
+		
+		rotorSound.resume();
 	}
 
 	@Override
@@ -246,6 +249,8 @@ public class Helicopter extends Vehicle {
 		rotor.hide();
 		rotor2.hide();
 		gun.hide();
+		
+		rotorSound.pause();
 	}
 	
 	@Override
