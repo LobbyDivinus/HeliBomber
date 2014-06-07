@@ -46,7 +46,7 @@ abstract public class Vehicle extends GameUpdateable {
 			updateDeadVehicle(time);
 		}
 		
-		if (x - context.camX >= - getWidth() && x - context.camX <= context.mapWidth + getWidth()) {
+		if (x - context.camX >= - getWidth() && x - context.camX <= context.xmax + getWidth()) {
 			if (alive) {
 				drawAliveVehicle();
 			} else {
