@@ -2,6 +2,10 @@ package info.flowersoft.helibomber;
 
 abstract public class Vehicle extends GameUpdateable {
 	
+	protected float x;
+	
+	protected float y;
+	
 	protected boolean alive;
 	
 	protected float life;
@@ -42,6 +46,18 @@ abstract public class Vehicle extends GameUpdateable {
 			updateDeadVehicle(time);
 		}
 		
+		if (x - context.camX >= - getWidth() && x - context.camX <= context.mapWidth + getWidth()) {
+			if (alive) {
+				drawAliveVehicle();
+			} else {
+				drawDeadVehicle();
+			}
+			
+			show();
+		} else {
+			hide();
+		}
+		
 		if (alive && life <= 0) {
 			alive = false;
 			onDead();
@@ -61,6 +77,14 @@ abstract public class Vehicle extends GameUpdateable {
 		return alive;
 	}
 	
+	abstract protected void show();
+	
+	abstract protected void hide();
+	
+	abstract protected void drawAliveVehicle();
+	
+	abstract protected void drawDeadVehicle();
+	
 	abstract protected void updateAliveVehicle(double time);
 	
 	abstract protected void updateDeadVehicle(double time);
@@ -76,5 +100,7 @@ abstract public class Vehicle extends GameUpdateable {
 	abstract protected float getCollisionY();
 	
 	abstract protected float getCollisionRadius();
+	
+	abstract protected float getWidth();
 	
 }

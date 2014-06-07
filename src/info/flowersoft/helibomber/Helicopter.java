@@ -17,10 +17,6 @@ public class Helicopter extends Vehicle {
 	
 	private Shape gun;
 	
-	private float x;
-	
-	private float y;
-	
 	private float gunX;
 	
 	private float gunY;
@@ -119,6 +115,48 @@ public class Helicopter extends Vehicle {
 	}
 	
 	@Override
+	public void show() {
+		shape.show();
+		if (isAlive()) {
+			rotor.show();
+			rotor2.show();
+			gun.show();
+		}
+	}
+	
+	@Override
+	public void hide() {
+		shape.hide();
+		rotor.hide();
+		rotor2.hide();
+		gun.hide();
+	}
+	
+	@Override
+	public void drawAliveVehicle() {
+		shape.setPosition(x - context.camX, y - context.camY);
+		shape.setRotation(angle);
+		
+		rotor.setPosition(x - context.camX, y - context.camY);
+		rotor.setRotation(angle);
+		rotor.setScale((float) Math.cos(sum), 1);
+		
+		rotor2.setPosition(
+				x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
+				y - context.camY + (float) (35 * Math.sin(angle) - 5 * Math.cos(angle)));
+		rotor2.setRotation(sum);
+		
+		gunX = x + (float) (5 * Math.cos(angle - Math.PI * 3 / 4));
+		gunY = y + (float) (5 * Math.sin(angle - Math.PI * 3 / 4));
+		gun.setPosition(gunX - context.camX, gunY - context.camY);
+		gun.setRotation(gunAngle);
+	}
+	
+	@Override
+	public void drawDeadVehicle() {
+	}
+	
+	@Override
 	protected void updateAliveVehicle(double time) {
 		sum += 2 * time * (speed + 8);
 		angle += 4 * time * (targetAngle - angle);
@@ -163,35 +201,6 @@ public class Helicopter extends Vehicle {
 			ySpeed = 0;
 		}
 		
-		if (x - context.camX >= -80 && x - context.camX <= context.xmax + 80) {
-			shape.setPosition(x - context.camX, y - context.camY);
-			shape.setRotation(angle);
-			
-			rotor.setPosition(x - context.camX, y - context.camY);
-			rotor.setRotation(angle);
-			rotor.setScale((float) Math.cos(sum), 1);
-			
-			rotor2.setPosition(
-					x - context.camX + (float) (35 * Math.cos(angle) + 5 * Math.sin(angle)),
-					y - context.camY + (float) (35 * Math.sin(angle) - 5 * Math.cos(angle)));
-			rotor2.setRotation(sum);
-			
-			gunX = x + (float) (5 * Math.cos(angle - Math.PI * 3 / 4));
-			gunY = y + (float) (5 * Math.sin(angle - Math.PI * 3 / 4));
-			gun.setPosition(gunX - context.camX, gunY - context.camY);
-			gun.setRotation(gunAngle);
-			
-			shape.show();
-			rotor.show();
-			rotor2.show();
-			gun.show();
-		} else {
-			shape.hide();
-			rotor.hide();
-			rotor2.hide();
-			gun.hide();
-		}
-		
 		fireCount += time;
 		if (fireMode) {
 			if (fireCount > 0.75f) {
@@ -203,11 +212,6 @@ public class Helicopter extends Vehicle {
 
 	@Override
 	protected void updateDeadVehicle(double time) {
-		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
-			shape.show();
-		} else {
-			shape.hide();
-		}
 	}
 	
 	@Override
@@ -242,6 +246,11 @@ public class Helicopter extends Vehicle {
 		rotor.hide();
 		rotor2.hide();
 		gun.hide();
+	}
+	
+	@Override
+	protected float getWidth() {
+		return 80;
 	}
 	
 }

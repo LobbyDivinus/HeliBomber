@@ -9,10 +9,6 @@ public class Tank extends Vehicle {
 	
 	private Shape gun;
 	
-	private float x;
-	
-	private float y;
-	
 	private float angle;
 	
 	private float frame;
@@ -48,6 +44,38 @@ public class Tank extends Vehicle {
 	}
 	
 	@Override
+	public void show() {
+		shape.show();
+		if (isAlive()) {
+			gun.show();
+		}
+	}
+	
+	@Override
+	public void hide() {
+		shape.hide();
+		gun.hide();
+	}
+	
+	@Override
+	public void drawAliveVehicle() {
+		shape.setRotation(angle);
+		shape.setPosition(x - context.camX, y - context.camY);
+		shape.setFrame(((int) frame) % 2);
+		
+		gunX = x + (float) (18 * Math.sin(angle));
+		gunY = y - (float) (18 * Math.cos(angle));
+		gun.setPosition(gunX - context.camX, gunY - context.camY);
+		gun.setRotation(gunAngle);
+	}
+	
+	@Override
+	public void drawDeadVehicle() {
+		shape.setRotation(angle);
+		shape.setPosition(x - context.camX, y - context.camY + 5);
+	}
+	
+	@Override
 	public void updateAliveVehicle(double time) {
 		x += 20 * time;
 		
@@ -55,23 +83,6 @@ public class Tank extends Vehicle {
 		y = context.terrain.getY(x) + 3;
 		
 		frame += 10 * time;
-		
-		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
-			shape.setRotation(angle);
-			shape.setPosition(x - context.camX, y - context.camY);
-			shape.setFrame(((int) frame) % 2);
-			
-			gunX = x + (float) (18 * Math.sin(angle));
-			gunY = y - (float) (18 * Math.cos(angle));
-			gun.setPosition(gunX - context.camX, gunY - context.camY);
-			gun.setRotation(gunAngle);
-			
-			shape.show();
-			gun.show();
-		} else {
-			shape.hide();
-			gun.hide();
-		}
 		
 		fireCount += time;
 		if (fireCount > 0.75f) {
@@ -82,14 +93,6 @@ public class Tank extends Vehicle {
 	
 	@Override
 	protected void updateDeadVehicle(double time) {
-		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
-			shape.setRotation(angle);
-			shape.setPosition(x - context.camX, y - context.camY + 5);
-			
-			shape.show();
-		} else {
-			shape.hide();
-		}
 	}
 
 	@Override
@@ -124,4 +127,9 @@ public class Tank extends Vehicle {
 		gun.hide();
 	}
 
+	@Override
+	public float getWidth() {
+		return 64;
+	}
+	
 }
