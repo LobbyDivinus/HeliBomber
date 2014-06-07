@@ -11,6 +11,10 @@ public class MainActivity extends AppActivity {
 		return new Game(savedInstanceState, this);
 	}
 
-	
+	@Override
+	public void onCreation() {
+		hideActionBar();
+		hideStatusBar();
+	}
 
 }
