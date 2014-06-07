@@ -18,6 +18,8 @@ public class GameSound extends GameUpdateable {
 	
 	private float y;
 	
+	private boolean paused;
+	
 	public GameSound(int id, boolean loop, GameContext context) {
 		super(context);
 		
@@ -26,6 +28,8 @@ public class GameSound extends GameUpdateable {
 		soundID = id;
 		
 		rate = 1;
+		
+		streamID = 0;
 	}
 	
 	public void setPosition(float x, float y) {
@@ -39,8 +43,11 @@ public class GameSound extends GameUpdateable {
 
 	@Override
 	public void update(double time) {
-		volumeLeft = 1;
-		volumeRight = 1;
+		float align = (x - context.camX - context.xmax / 2f);
+		volumeLeft = - align;
+		volumeRight = align;
+		if (volumeLeft < 0) {volumeLeft = 0;}
+		if (volumeRight < 0) {volumeRight = 0;}
 		
 		if (streamID == 0) {
 			int loop = 0;
@@ -52,10 +59,26 @@ public class GameSound extends GameUpdateable {
 				dispose();
 			}
 		} else {
-			context.soundPool.resume(streamID);
+			if (paused) {
+				context.soundPool.pause(streamID);
+			} else {
+				context.soundPool.resume(streamID);
+			}
 			context.soundPool.setVolume(streamID, volumeLeft, volumeRight);
 			context.soundPool.setRate(streamID, rate);
 		}
 	}
 
+	public void pause() {
+		paused = true;
+	}
+	
+	public void resume() {
+		paused = false;
+	}
+	
+	public boolean isPaused() {
+		return paused;
+	}
+	
 }
