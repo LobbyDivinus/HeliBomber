@@ -1,18 +1,12 @@
 package info.flowersoft.helibomber;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import com.threed.jpct.SimpleVector;
 
 import android.content.Context;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.SoundPool;
-import android.media.SoundPool.OnLoadCompleteListener;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.util.Log;
 import info.flowersoft.gameframe.AppRenderer;
 import info.flowersoft.gameframe.BlittingEngine;
 import info.flowersoft.gameframe.Button;
@@ -21,16 +15,12 @@ import info.flowersoft.gameframe.description.FontDescription;
 import info.flowersoft.gameframe.description.ImageDescription;
 import info.flowersoft.gameframe.description.ScreenRect;
 import info.flowersoft.gameframe.shape.ImageShape;
-import info.flowersoft.gameframe.shape.Shape;
 import info.flowersoft.gameframe.shape.ShapeFactory;
 import info.flowersoft.gameframe.touch.TouchPoint;
 
 public class Game extends AppRenderer {
 	
 	private GameContext context;
-	
-	private Shape heliShape;
-	private Shape rotorShape;
 	
 	private AccelerationVector acceleration;
 	
@@ -141,7 +131,6 @@ public class Game extends AppRenderer {
 
 	@Override
 	protected void update(double time) {
-		long ms = SystemClock.uptimeMillis();
 		
 		for (GameUpdateable upl:new ArrayList<GameUpdateable>(context.updateables)) {
 			upl.update(time);
