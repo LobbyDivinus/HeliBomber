@@ -106,6 +106,10 @@ public class Game extends AppRenderer {
 		
 		new Tank(200, context);
 		
+		new Tank(300, context);
+		
+		new Tank(380, context);
+		
 		for (int i = 0; i < 20; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
 		}
