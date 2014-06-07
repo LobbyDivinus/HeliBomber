@@ -52,6 +52,7 @@ public class GameSound extends GameUpdateable {
 				dispose();
 			}
 		} else {
+			context.soundPool.resume(streamID);
 			context.soundPool.setVolume(streamID, volumeLeft, volumeRight);
 			context.soundPool.setRate(streamID, rate);
 		}
