@@ -56,14 +56,22 @@ public class Tank extends Vehicle {
 		
 		frame += 10 * time;
 		
-		shape.setRotation(angle);
-		shape.setPosition(x - context.camX, y - context.camY);
-		shape.setFrame(((int) frame) % 2);
-		
-		gunX = x + (float) (18 * Math.sin(angle));
-		gunY = y - (float) (18 * Math.cos(angle));
-		gun.setPosition(gunX - context.camX, gunY - context.camY);
-		gun.setRotation(gunAngle);
+		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
+			shape.setRotation(angle);
+			shape.setPosition(x - context.camX, y - context.camY);
+			shape.setFrame(((int) frame) % 2);
+			
+			gunX = x + (float) (18 * Math.sin(angle));
+			gunY = y - (float) (18 * Math.cos(angle));
+			gun.setPosition(gunX - context.camX, gunY - context.camY);
+			gun.setRotation(gunAngle);
+			
+			shape.show();
+			gun.show();
+		} else {
+			shape.hide();
+			gun.hide();
+		}
 		
 		fireCount += time;
 		if (fireCount > 0.75f) {
@@ -75,6 +83,9 @@ public class Tank extends Vehicle {
 	@Override
 	protected void updateDeadVehicle(double time) {
 		if (x - context.camX >= - 64 && x - context.camX <= context.xmax + 64) {
+			shape.setRotation(angle);
+			shape.setPosition(x - context.camX, y - context.camY + 5);
+			
 			shape.show();
 		} else {
 			shape.hide();
