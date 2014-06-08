@@ -38,7 +38,7 @@ abstract public class Vehicle extends GameUpdateable {
 			if (life < getMaxLife() / 2) {
 				smokeCount += time;
 				if (smokeCount >= 1) {
-					new Smoke(x, y - 5, context);
+					new Smoke(x, y - 10, context);
 					smokeCount = 0;
 				}
 			}
@@ -61,13 +61,11 @@ abstract public class Vehicle extends GameUpdateable {
 		if (alive && life <= 0) {
 			alive = false;
 			onDead();
-			float x = getCollisionX();
-			float y = getCollisionY();
 			float r = getCollisionRadius();
-			for (int i = 0; i < 8; i++) {
+			for (int i = 0; i < 4; i++) {
 				float angle = (float) (2 * Math.PI * Math.random());
 				float px = x + (float) (Math.random() * r * Math.cos(angle));
-				float py = y + (float) (Math.random() * r * Math.sin(angle));
+				float py = y + (float) (Math.random() * r * Math.sin(angle)) - 10;
 				new Explosion(px, py, context.res.explosionSound, context);
 			}
 		}
