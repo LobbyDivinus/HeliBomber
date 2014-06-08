@@ -63,8 +63,6 @@ public class Tank extends Vehicle {
 		shape.setPosition(x - context.camX, y - context.camY);
 		shape.setFrame(((int) frame) % 2);
 		
-		gunX = x + (float) (18 * Math.sin(angle));
-		gunY = y - (float) (18 * Math.cos(angle));
 		gun.setPosition(gunX - context.camX, gunY - context.camY);
 		gun.setRotation(gunAngle);
 	}
@@ -89,6 +87,9 @@ public class Tank extends Vehicle {
 			fire();
 			fireCount = 0;
 		}
+		
+		gunX = x + (float) (20 * Math.sin(angle));
+		gunY = y - (float) (20 * Math.cos(angle));
 	}
 	
 	@Override
