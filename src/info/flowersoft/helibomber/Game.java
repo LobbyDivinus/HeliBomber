@@ -66,7 +66,7 @@ public class Game extends AppRenderer {
 		context.blittingEngine = new BlittingEngine(getBuffer());
 		context.blittingEngine.setVirtualResolution(0, 0, context.xmax, context.ymax);
 		
-		context.soundPool = new SoundPool(16, AudioManager.STREAM_MUSIC, 100);
+		context.soundPool = new SoundPool(64, AudioManager.STREAM_MUSIC, 100);
 		
 		context.updateables = new ArrayList<GameUpdateable>();
 		context.vehicleList = new ArrayList<Vehicle>();
