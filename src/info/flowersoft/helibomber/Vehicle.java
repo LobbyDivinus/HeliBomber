@@ -38,7 +38,7 @@ abstract public class Vehicle extends GameUpdateable {
 			if (life < getMaxLife() / 2) {
 				smokeCount += time;
 				if (smokeCount >= 1) {
-					new Smoke(getCollisionX(), getCollisionY(), context);
+					new Smoke(x, y - 5, context);
 					smokeCount = 0;
 				}
 			}
