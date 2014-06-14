@@ -236,22 +236,22 @@ public class Helicopter extends Vehicle {
 	}
 	
 	@Override
-	protected float getMaxLife() {
+	public float getMaxLife() {
 		return 100;
 	}
 
 	@Override
-	protected float getCollisionX() {
+	public float getCollisionX() {
 		return x;
 	}
 
 	@Override
-	protected float getCollisionY() {
+	public float getCollisionY() {
 		return y;
 	}
 
 	@Override
-	protected float getCollisionRadius() {
+	public float getCollisionRadius() {
 		return 20;
 	}
 
@@ -274,7 +274,7 @@ public class Helicopter extends Vehicle {
 	}
 	
 	@Override
-	protected float getWidth() {
+	public float getWidth() {
 		return 80;
 	}
 	

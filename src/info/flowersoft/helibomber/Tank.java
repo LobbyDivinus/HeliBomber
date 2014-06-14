@@ -39,6 +39,10 @@ public class Tank extends Vehicle {
 		new Bullet(this, gunX, gunY, 0, 0, gunAngle, context);
 	}
 	
+	public void setGunTarget(Vehicle v) {
+		setGunTarget(v.x, v.y);
+	}
+	
 	public void setGunTarget(float x, float y) {
 		gunAngle = (float) (Math.atan2(y - gunY, x - gunX));
 	}
@@ -97,22 +101,22 @@ public class Tank extends Vehicle {
 	}
 
 	@Override
-	protected float getMaxLife() {
+	public float getMaxLife() {
 		return 100;
 	}
 
 	@Override
-	protected float getCollisionX() {
+	public float getCollisionX() {
 		return x;
 	}
 
 	@Override
-	protected float getCollisionY() {
+	public float getCollisionY() {
 		return y;
 	}
 
 	@Override
-	protected float getCollisionRadius() {
+	public float getCollisionRadius() {
 		return 20;
 	}
 

@@ -12,6 +12,8 @@ abstract public class Vehicle extends GameUpdateable {
 	
 	protected float smokeCount;
 	
+	protected Control control;
+	
 	public Vehicle(GameContext context) {
 		super(context);
 		
@@ -19,6 +21,14 @@ abstract public class Vehicle extends GameUpdateable {
 		
 		alive = true;
 		life = getMaxLife();
+	}
+	
+	public void setControl(Control c) {
+		control = c;
+	}
+	
+	public Control getControl() {
+		return control;
 	}
 	
 	public void dispose() {
@@ -33,6 +43,7 @@ abstract public class Vehicle extends GameUpdateable {
 
 	public void update(double time) {
 		if (alive) {
+			control.think();
 			updateAliveVehicle(time);
 			
 			if (life < getMaxLife() / 2) {
@@ -61,6 +72,7 @@ abstract public class Vehicle extends GameUpdateable {
 		if (alive && life <= 0) {
 			alive = false;
 			onDead();
+			control.onDead();
 			float r = getCollisionRadius();
 			for (int i = 0; i < 4; i++) {
 				float angle = (float) (2 * Math.PI * Math.random());
@@ -73,6 +85,16 @@ abstract public class Vehicle extends GameUpdateable {
 	
 	public boolean isAlive() {
 		return alive;
+	}
+	
+	public double getLife() {
+		return life;
+	}
+	
+	public double distanceTo(Vehicle v) {
+		double dx = x - v.x;
+		double dy = y - v.y;
+		return Math.sqrt(dx * dx + dy * dy);
 	}
 	
 	abstract protected void show();
@@ -91,14 +113,14 @@ abstract public class Vehicle extends GameUpdateable {
 	
 	abstract protected void onDead();
 	
-	abstract protected float getMaxLife();
+	abstract public float getMaxLife();
 	
-	abstract protected float getCollisionX();
+	abstract public float getCollisionX();
 	
-	abstract protected float getCollisionY();
+	abstract public float getCollisionY();
 	
-	abstract protected float getCollisionRadius();
+	abstract public float getCollisionRadius();
 	
-	abstract protected float getWidth();
+	abstract public float getWidth();
 	
 }
