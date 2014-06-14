@@ -102,13 +102,23 @@ public class Game extends AppRenderer {
 		context.terrain = new Terrain(context);
 		
 		
+		Team teamHuman = new Team("Human");
+		Team teamComputer = new Team("Computer");
+		
+		
 		context.player = new Helicopter(600, context);
+		context.player.setControl(new HelicopterHumanControl(context, teamHuman, context.player));
 		
-		new Tank(200, context);
+		Tank t;
 		
-		new Tank(300, context);
+		t = new Tank(200, context);
+		t.setControl(new TankKIControl(context, teamComputer, t));
 		
-		new Tank(380, context);
+		t = new Tank(300, context);
+		t.setControl(new TankKIControl(context, teamComputer, t));
+		
+		t = new Tank(380, context);
+		t.setControl(new TankKIControl(context, teamComputer, t));
 		
 		for (int i = 0; i < 20; i++) {
 			new Tree((float) (context.mapWidth * Math.random()), context);
@@ -139,13 +149,7 @@ public class Game extends AppRenderer {
 		for (GameUpdateable upl:new ArrayList<GameUpdateable>(context.updateables)) {
 			upl.update(time);
 		}
-		
-		for (Vehicle v:context.vehicleList) {
-			if (v instanceof Tank) {
-				((Tank) v).setGunTarget(context.player.getCollisionX(), context.player.getCollisionY());
-			}
-		}
-		
+
 		SimpleVector acc = acceleration.get();
 		float roll = (float) Math.atan2(acc.x, acc.z);
 		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
@@ -157,10 +161,6 @@ public class Game extends AppRenderer {
 			context.player.controlDown();
 		}
 		
-		context.camX += 2 * time * (
-				Math.max(Math.min(context.player.getX() - context.xmax / 2, context.mapWidth - context.xmax), 0)
-				- context.camX);
-		
 		if (frame.isPressed()) {
 			TouchPoint tp = frame.getTouchPoint();
 			context.player.setGunTarget(
@@ -171,6 +171,10 @@ public class Game extends AppRenderer {
 		} else {
 			context.player.setFireMode(false);
 		}
+		
+		context.camX += 2 * time * (
+				Math.max(Math.min(context.player.getX() - context.xmax / 2, context.mapWidth - context.xmax), 0)
+				- context.camX);
 	}
 
 	@Override
