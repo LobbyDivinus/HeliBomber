@@ -79,7 +79,7 @@ public class Tank extends Vehicle {
 	
 	@Override
 	public void updateAliveVehicle(double time) {
-		x += 20 * time;
+		//x += 20 * time;
 		
 		angle = context.terrain.getAngle(x, 20);
 		y = context.terrain.getY(x) + 3;
