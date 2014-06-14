@@ -22,16 +22,46 @@ public class Game extends AppRenderer {
 	
 	private GameContext context;
 	
-	private AccelerationVector acceleration;
+	private GameUI ui;
 	
-	private Button cmdForce;
-	
-	public TouchFrame frame;
+	public class GameUI implements IHumanInterface {
+		private AccelerationVector acceleration;
+		
+		private Button cmdForce;
+		
+		public TouchFrame frame;
+
+		@Override
+		public boolean power() {
+			return cmdForce.isPressed();
+		}
+
+		@Override
+		public boolean fire() {
+			return frame.isPressed();
+		}
+
+		@Override
+		public float getFireX() {
+			return frame.getTouchPoint().getX() * context.xmax / getWidth() + context.camX;
+		}
+
+		@Override
+		public float getFireY() {
+			return frame.getTouchPoint().getY() * context.ymax / getHeight() + context.camY;
+		}
+
+		@Override
+		public SimpleVector getAccelerationVector() {
+			return acceleration.get();
+		}
+	}
 	
 	public Game(Bundle savedInstance, Context con) {
 		super(savedInstance, con);
 		
-		acceleration = new AccelerationVector(con);
+		ui = new GameUI();
+		ui.acceleration = new AccelerationVector(con);
 	}
 
 	@Override
@@ -107,7 +137,7 @@ public class Game extends AppRenderer {
 		
 		
 		context.player = new Helicopter(600, context);
-		context.player.setControl(new HelicopterHumanControl(context, teamHuman, context.player));
+		context.player.setControl(new HelicopterHumanControl(context, teamHuman, ui, context.player));
 		
 		Tank t;
 		
@@ -124,14 +154,14 @@ public class Game extends AppRenderer {
 			new Tree((float) (context.mapWidth * Math.random()), context);
 		}
 		
-		frame = new TouchFrame(new ScreenRect(0, 0, getWidth(), getHeight()));
-		registerTouchable(frame);
+		ui.frame = new TouchFrame(new ScreenRect(0, 0, getWidth(), getHeight()));
+		registerTouchable(ui.frame);
 		
 		ImageShape btn = context.shapeFactory.createImage(res.buttonImg, context.xmax - 100, context.ymax - 60);
 		btn.setOrder(-1000);
 		
-		cmdForce = new Button(btn);
-		registerTouchable(cmdForce);
+		ui.cmdForce = new Button(btn);
+		registerTouchable(ui.cmdForce);
 	}
 
 	@Override
@@ -148,28 +178,6 @@ public class Game extends AppRenderer {
 		
 		for (GameUpdateable upl:new ArrayList<GameUpdateable>(context.updateables)) {
 			upl.update(time);
-		}
-
-		SimpleVector acc = acceleration.get();
-		float roll = (float) Math.atan2(acc.x, acc.z);
-		float angle = (float) (Math.sin(roll) * Math.atan2(acc.y, acc.x) + Math.cos(roll) * Math.atan2(acc.y, acc.z));
-		context.player.tilt(angle);
-		
-		if (cmdForce.isPressed()) {
-			context.player.controlUp();
-		} else {
-			context.player.controlDown();
-		}
-		
-		if (frame.isPressed()) {
-			TouchPoint tp = frame.getTouchPoint();
-			context.player.setGunTarget(
-					tp.getX() * context.xmax / getWidth() + context.camX,
-					tp.getY() * context.ymax / getHeight() + context.camY);
-			
-			context.player.setFireMode(true);
-		} else {
-			context.player.setFireMode(false);
 		}
 		
 		context.camX += 2 * time * (

@@ -2,8 +2,10 @@ package info.flowersoft.helibomber;
 
 public abstract class HumanControl extends Control {
 
-	public HumanControl(GameContext con, Team t) {
+	protected IHumanInterface humanInterface;
+	public HumanControl(GameContext con, Team t, IHumanInterface hInterface) {
 		super(con, t);
+		humanInterface = hInterface;
 	}
 
 }
